@@ -1,5 +1,8 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
+// #include <utility>
+// #include <functional>
+
 #include "Static.h"
 
 using namespace std;
@@ -19,20 +22,19 @@ int main()
 
     std::cout << sum << std::endl;
 
-    // GLFWwindow * window = glfwCreateWindow( 800, 600, "OneFLOW GLFW OpenGL Test", NULL, NULL );
-    // if ( window == NULL )
-    // {
-    //     std::cout << "Failed to create GLFW window" << std::endl;
-    //     glfwTerminate();
-    //     return -1;
-    // }
-    // // render loop
-    // while ( !glfwWindowShouldClose( window ) )
-    // {
-    //     // check and call events and swap the buffers
-    //     glfwPollEvents();
-    //     glfwSwapBuffers( window );
-    // }
-    // glfwMakeContextCurrent( window );
+    std::array<std::string, 5> arr = GetStringArray();
+    for (int i = 0; i < arr.size(); i++)
+    {
+        std::cout << arr[i] << std::endl;
+    }
+
+    auto tupleRes = GetTwoTypesResult();
+    std::cout << std::get<0>(tupleRes) << std::endl;
+    std::cout << std::get<1>(tupleRes) << std::endl;
+    
+    // no idea how to include, just list here
+    // std::cout << tupleRes.first << std::endl;
+    // std::cout << tupleRes.second << std::endl;
+
     return 0;
 }
