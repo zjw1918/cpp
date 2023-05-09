@@ -1,39 +1,41 @@
 #include <iostream>
+#include <vector>
+#include <unordered_map>
 
-template<typename T>
-void Print(T arg) {
-    std::cout << arg << std::endl;
-}
+struct Device{};
 
-struct Student
-{
-    std::string name;
-    int age;
-};
-
-template<typename T, int N>
-class MyArray
+class DeviceManager
 {
 private:
-    T m_Array[N];
+    std::unordered_map<std::string, std::vector<Device*>> m_Devices;
 public:
-    int GetSize() const { return N; }
+    const std::unordered_map<std::string, std::vector<Device*>>& GetDevices() const
+    {
+        return m_Devices;
+    }
 };
-
 
 int main()
 {
-    std::cout << "hello world" << std::endl;
+    std::vector<std::string> arr;
+    arr.emplace_back("hello");
+    arr.emplace_back("world");
 
-    // Print(123);
-    // Print("hello");
+    for (int i = 0; i < arr.size(); i++)
+    {
+        std::cout << arr[i] << std::endl;
+    }
 
-    // Student t = {"Tom", 12};
-    // Print(t);
+    for (std::vector<std::string>::iterator it = arr.begin();
+         it != arr.end(); it++)
+    {
+        std::cout << *it << std::endl;
+    }
 
-    MyArray<Student, 1> arr;
-    std::cout << arr.GetSize() << std::endl;
-    std::cout << sizeof(arr) << std::endl;
-    
+    DeviceManager manager;
+
+    // can't be: audo devices = manager.GetDevices();
+    const auto& devices = manager.GetDevices();
+
     return 0;
 }
