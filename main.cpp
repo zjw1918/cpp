@@ -2,40 +2,36 @@
 #include <vector>
 #include <unordered_map>
 
-struct Device{};
-
-class DeviceManager
+void HelloWorld(int a)
 {
-private:
-    std::unordered_map<std::string, std::vector<Device*>> m_Devices;
-public:
-    const std::unordered_map<std::string, std::vector<Device*>>& GetDevices() const
-    {
-        return m_Devices;
+    std::cout << "Hello world " << a << std::endl;
+}
+
+
+void ForEach(const std::vector<int>& values, void(*func)(int))
+{
+    for (int value: values) {
+        func(value);
     }
-};
+}
 
 int main()
 {
-    std::vector<std::string> arr;
-    arr.emplace_back("hello");
-    arr.emplace_back("world");
+    // simplify or make it easy to read
+    typedef void(*HelloFunction)(int);
 
-    for (int i = 0; i < arr.size(); i++)
-    {
-        std::cout << arr[i] << std::endl;
-    }
+    // void(*fn)();
 
-    for (std::vector<std::string>::iterator it = arr.begin();
-         it != arr.end(); it++)
-    {
-        std::cout << *it << std::endl;
-    }
+    HelloFunction fn = HelloWorld;
+    // auto fn = HelloWorld;
 
-    DeviceManager manager;
+    fn(12);
 
-    // can't be: audo devices = manager.GetDevices();
-    const auto& devices = manager.GetDevices();
+
+    std::vector<int> arr = {0,1,2,3,4,10};
+    ForEach(arr, fn);
+    // lambda
+    ForEach(arr, [](int value) { std::cout << "Lambda: " << value << std::endl; });
 
     return 0;
 }
