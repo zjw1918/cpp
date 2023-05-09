@@ -1,40 +1,39 @@
-#include <GLFW/glfw3.h>
 #include <iostream>
-// #include <utility>
-// #include <functional>
 
-#include "Static.h"
+template<typename T>
+void Print(T arg) {
+    std::cout << arg << std::endl;
+}
 
-using namespace std;
+struct Student
+{
+    std::string name;
+    int age;
+};
 
-// 如果不引入glfw头文件时，如下申明函数也是可以运行的
-// extern "C" int glfwInit();
+template<typename T, int N>
+class MyArray
+{
+private:
+    T m_Array[N];
+public:
+    int GetSize() const { return N; }
+};
+
 
 int main()
 {
     std::cout << "hello world" << std::endl;
 
-    int i = glfwInit();
+    // Print(123);
+    // Print("hello");
 
-    std::cout << i << std::endl;
+    // Student t = {"Tom", 12};
+    // Print(t);
 
-    int sum = addTwo(8, 100);
-
-    std::cout << sum << std::endl;
-
-    std::array<std::string, 5> arr = GetStringArray();
-    for (int i = 0; i < arr.size(); i++)
-    {
-        std::cout << arr[i] << std::endl;
-    }
-
-    auto tupleRes = GetTwoTypesResult();
-    std::cout << std::get<0>(tupleRes) << std::endl;
-    std::cout << std::get<1>(tupleRes) << std::endl;
+    MyArray<Student, 1> arr;
+    std::cout << arr.GetSize() << std::endl;
+    std::cout << sizeof(arr) << std::endl;
     
-    // no idea how to include, just list here
-    // std::cout << tupleRes.first << std::endl;
-    // std::cout << tupleRes.second << std::endl;
-
     return 0;
 }
