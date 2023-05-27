@@ -12,7 +12,8 @@ int main()
     std::cout << "hello world" <<  std::endl;
     // function_ptr::run();
     // my_thread::run();
-    my_thread::runTime();
+    // my_thread::runTime();
+    my_thread::runUnions();
 
     int sum = addTwo(1,2);
     std::cout << "sum: " << sum <<  std::endl;
