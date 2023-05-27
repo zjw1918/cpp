@@ -126,4 +126,15 @@ namespace my_thread
         // example01_union();
         example01_union_full();
     }
+
+    // struct bindings c++17
+    std::tuple<std::string, int> creatPerson() {
+        return {"Tom", 19};
+    }
+
+    void runStructBindings()
+    {
+        auto[name, age] = creatPerson();
+        std::cout << name << ", " << age << std::endl;  
+    }
 } // namespace my_thread

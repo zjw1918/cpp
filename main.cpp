@@ -13,7 +13,8 @@ int main()
     // function_ptr::run();
     // my_thread::run();
     // my_thread::runTime();
-    my_thread::runUnions();
+    // my_thread::runUnions();
+    my_thread::runStructBindings();
 
     int sum = addTwo(1,2);
     std::cout << "sum: " << sum <<  std::endl;
