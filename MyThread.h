@@ -6,6 +6,7 @@ namespace my_thread
     void runTime();
     void runUnions();
     void runStructBindings();
+    void runOptionalData();
     
 } // namespace my_thread
 

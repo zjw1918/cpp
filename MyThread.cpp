@@ -2,6 +2,8 @@
 #include <thread>
 #include <chrono>
 #include "MyThread.h"
+#include <fstream>
+#include <optional>
 
 namespace my_thread
 {
@@ -137,4 +139,33 @@ namespace my_thread
         auto[name, age] = creatPerson();
         std::cout << name << ", " << age << std::endl;  
     }
+
+    // How to Deal with OPTIONAL Data in C++
+    std::optional<std::string> ReadFileAsString(const char* filepath) {
+        std::ifstream stream(filepath);
+        if (stream)
+        {
+            std::string result;
+            // read file
+            stream.close();
+            return result;
+        }
+        return {};
+    }
+    
+
+    void runOptionalData() {
+        std::optional<std::string> data = ReadFileAsString("data.txt");
+        std::string value = data.value_or("defaule");
+        std::cout << value << std::endl;
+        
+        if (data.has_value())
+        {
+            std::cout << "read file ok\n";
+        } else 
+        {
+            std::cout << "read file error\n";
+        }
+    }
+
 } // namespace my_thread
