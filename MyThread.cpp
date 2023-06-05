@@ -6,6 +6,9 @@
 #include <optional>
 #include <variant>
 #include <any>
+#include <vector>
+#include <future>
+#include <mutex>
 
 namespace my_thread
 {
@@ -190,6 +193,61 @@ namespace my_thread
         data = std::string("hello any.");
         std::string& str = std::any_cast<std::string&>(data);
         std::cout << str << "\n";
+    }
+
+    // How to make C++ run FASTER (with std::async)
+    using namespace std::literals::chrono_literals;
+    int size = 5;
+    std::vector<int> arr(5);
+    std::vector<std::future<void>> m_futures;
+
+    // without a mutex, will be faster
+    static void addToVecHard(std::vector<int> *vector, int index) {
+        // mock a heavy job
+        std::cout << "going to sleep:" << index << "\n";
+        std::this_thread::sleep_for(1s);
+
+        (*vector)[index] = index + 10;
+    }
+
+    // with a mutex
+    static std::mutex arrMutex;
+    static void addToVecHard2(std::vector<int> *vector, int index) {
+        
+
+        // mock a heavy job
+        std::cout << "going to sleep:" << index << "\n";
+        std::this_thread::sleep_for(1s);
+
+        // lock should only be put before the result collection
+        // which means let heavy work run first
+        std::lock_guard<std::mutex> lock(arrMutex);
+        (*vector)[index] = index + 20;
+    }
+
+    void runAsync() {
+        // no async way
+        // for (int i = 0; i < 5; i++)
+        // {
+        //     arr[i] = i;
+        //     std::cout << "going to sleep:" << i << "\n";
+        //     std::this_thread::sleep_for(1s);
+        // }
+
+        // the async way
+        for (int i = 0; i < size; i++)
+        {
+            m_futures.push_back(
+                std::async(std::launch::async, addToVecHard2, &arr, i)
+            );
+        }
+        std::this_thread::sleep_for(5s);
+        for (int i = 0; i < size; i++)
+        {
+            std::cout << "arr value:" << arr[i] << "\n";
+        }
+        
+        
     }
 
 } // namespace my_thread

@@ -17,7 +17,8 @@ int main()
     // my_thread::runStructBindings();
     // my_thread::runOptionalData();
     // my_thread::runVariant();
-    my_thread::runAny();
+    // my_thread::runAny();
+    my_thread::runAsync();
 
     int sum = addTwo(1,2);
     std::cout << "sum: " << sum <<  std::endl;

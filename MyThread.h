@@ -9,6 +9,7 @@ namespace my_thread
     void runOptionalData();
     void runVariant();
     void runAny();
+    void runAsync();
     
 } // namespace my_thread
 
