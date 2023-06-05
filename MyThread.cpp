@@ -4,6 +4,7 @@
 #include "MyThread.h"
 #include <fstream>
 #include <optional>
+#include <variant>
 
 namespace my_thread
 {
@@ -165,6 +166,18 @@ namespace my_thread
         } else 
         {
             std::cout << "read file error\n";
+        }
+    }
+
+    // Multiple TYPES of Data in a SINGLE VARIABLE in C++
+
+    void runVariant() {
+        std::variant<std::string, int> data;
+        data = "hello";
+        std::cout << std::get<std::string>(data) << "\n";
+        if (auto valuePtr = std::get_if<std::string>(&data)) {
+            std::string& value = *valuePtr;
+            std::cout << value << "\n";
         }
     }
 
