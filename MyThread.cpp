@@ -5,6 +5,7 @@
 #include <fstream>
 #include <optional>
 #include <variant>
+#include <any>
 
 namespace my_thread
 {
@@ -179,6 +180,16 @@ namespace my_thread
             std::string& value = *valuePtr;
             std::cout << value << "\n";
         }
+    }
+
+    // How to store ANY data in C++
+    // std::any may allocate memoty according to the type/size
+    void runAny() {
+        std::any data;
+        data = 1;
+        data = std::string("hello any.");
+        std::string& str = std::any_cast<std::string&>(data);
+        std::cout << str << "\n";
     }
 
 } // namespace my_thread

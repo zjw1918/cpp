@@ -8,6 +8,7 @@ namespace my_thread
     void runStructBindings();
     void runOptionalData();
     void runVariant();
+    void runAny();
     
 } // namespace my_thread
 
