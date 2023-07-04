@@ -10,6 +10,7 @@ namespace my_thread
     void runVariant();
     void runAny();
     void runAsync();
+    void runMakeStringFaster();
     
 } // namespace my_thread
 

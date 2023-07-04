@@ -10,6 +10,15 @@
 #include <future>
 #include <mutex>
 
+// for learning making string faster, override this operator
+static uint32_t s_MallocCount = 0;
+void *operator new(size_t size)
+{
+    s_MallocCount++;
+    std::cout << "allocating memory size:" << size << " bytes\n";
+    return malloc(size);
+}
+
 namespace my_thread
 {
     bool isFinished = false;
@@ -113,7 +122,7 @@ namespace my_thread
         };
     };
 
-    void PrintVector2(const Vector2& vector)
+    void PrintVector2(const Vector2 &vector)
     {
         std::cout << vector.x << ", " << vector.y << std::endl;
     }
@@ -135,18 +144,20 @@ namespace my_thread
     }
 
     // struct bindings c++17
-    std::tuple<std::string, int> creatPerson() {
+    std::tuple<std::string, int> creatPerson()
+    {
         return {"Tom", 19};
     }
 
     void runStructBindings()
     {
-        auto[name, age] = creatPerson();
-        std::cout << name << ", " << age << std::endl;  
+        auto [name, age] = creatPerson();
+        std::cout << name << ", " << age << std::endl;
     }
 
     // How to Deal with OPTIONAL Data in C++
-    std::optional<std::string> ReadFileAsString(const char* filepath) {
+    std::optional<std::string> ReadFileAsString(const char *filepath)
+    {
         std::ifstream stream(filepath);
         if (stream)
         {
@@ -157,17 +168,18 @@ namespace my_thread
         }
         return {};
     }
-    
 
-    void runOptionalData() {
+    void runOptionalData()
+    {
         std::optional<std::string> data = ReadFileAsString("data.txt");
         std::string value = data.value_or("defaule");
         std::cout << value << std::endl;
-        
+
         if (data.has_value())
         {
             std::cout << "read file ok\n";
-        } else 
+        }
+        else
         {
             std::cout << "read file error\n";
         }
@@ -175,23 +187,26 @@ namespace my_thread
 
     // Multiple TYPES of Data in a SINGLE VARIABLE in C++
 
-    void runVariant() {
+    void runVariant()
+    {
         std::variant<std::string, int> data;
         data = "hello";
         std::cout << std::get<std::string>(data) << "\n";
-        if (auto valuePtr = std::get_if<std::string>(&data)) {
-            std::string& value = *valuePtr;
+        if (auto valuePtr = std::get_if<std::string>(&data))
+        {
+            std::string &value = *valuePtr;
             std::cout << value << "\n";
         }
     }
 
     // How to store ANY data in C++
     // std::any may allocate memoty according to the type/size
-    void runAny() {
+    void runAny()
+    {
         std::any data;
         data = 1;
         data = std::string("hello any.");
-        std::string& str = std::any_cast<std::string&>(data);
+        std::string &str = std::any_cast<std::string &>(data);
         std::cout << str << "\n";
     }
 
@@ -202,7 +217,8 @@ namespace my_thread
     std::vector<std::future<void>> m_futures;
 
     // without a mutex, will be faster
-    static void addToVecHard(std::vector<int> *vector, int index) {
+    static void addToVecHard(std::vector<int> *vector, int index)
+    {
         // mock a heavy job
         std::cout << "going to sleep:" << index << "\n";
         std::this_thread::sleep_for(1s);
@@ -212,8 +228,8 @@ namespace my_thread
 
     // with a mutex
     static std::mutex arrMutex;
-    static void addToVecHard2(std::vector<int> *vector, int index) {
-        
+    static void addToVecHard2(std::vector<int> *vector, int index)
+    {
 
         // mock a heavy job
         std::cout << "going to sleep:" << index << "\n";
@@ -225,7 +241,8 @@ namespace my_thread
         (*vector)[index] = index + 20;
     }
 
-    void runAsync() {
+    void runAsync()
+    {
         // no async way
         // for (int i = 0; i < 5; i++)
         // {
@@ -238,16 +255,38 @@ namespace my_thread
         for (int i = 0; i < size; i++)
         {
             m_futures.push_back(
-                std::async(std::launch::async, addToVecHard2, &arr, i)
-            );
+                std::async(std::launch::async, addToVecHard2, &arr, i));
         }
         std::this_thread::sleep_for(5s);
         for (int i = 0; i < size; i++)
         {
             std::cout << "arr value:" << arr[i] << "\n";
         }
-        
-        
+    }
+
+    ///////////////////////////////
+    // how to make string faster //
+    ///////////////////////////////
+
+    void PrintNamer(const std::string &str)
+    {
+        std::cout << str << std::endl;
+    }
+
+    void runMakeStringFaster()
+    {
+        std::string s = "hello world";
+        std::string s11 = "hello world11";
+        PrintNamer(s11);
+
+        std::string firstName = s.substr(0, 5);
+        std::string lastName = s.substr(6, 12);
+
+        PrintNamer(firstName);
+        PrintNamer(lastName);
+        // std::string xx = "xx";
+
+        std::cout << "all malloc count:" << s_MallocCount << std::endl;
     }
 
 } // namespace my_thread
